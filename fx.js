@@ -26,6 +26,9 @@ const filter = curry((f, iter) => {
   return res;
 });
 
+const log = a => {
+  console.log(a);
+};
 const products = [
   { name: "반팔티", price: 15000, quantity: 1 },
   { name: "긴팔티", price: 20000, quantity: 2 },
@@ -97,5 +100,3 @@ console.log(t_price(products));
 // 더 추상화
 const sum = curry((f, iter) => go(iter, map(f), reduce(add)));
 const tt_quan = sum(p => p.quantity);
-
-console.log(tt_quan(products));

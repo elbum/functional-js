@@ -1,3 +1,12 @@
+<html>
+<head></head>
+<body>
+<div id="cart"></div>
+
+</body>
+
+
+<script>
 // # define function
 const curry = f => (a, ..._) => (_.length ? f(a, ..._) : (..._) => f(a, ..._));
 
@@ -27,10 +36,11 @@ const filter = curry((f, iter) => {
 });
 
 const products = [
-  { name: "반팔티", price: 15000, quantity: 1 },
-  { name: "긴팔티", price: 20000, quantity: 2 },
-  { name: "핸드폰케이스", price: 30000, quantity: 3 },
-  { name: "매트리스", price: 18000, quantity: 4 }
+  { name: "반팔티", price: 15000, quantity: 1 , is_selected:true},
+  { name: "긴팔티", price: 20000, quantity: 2 , is_selected:false},
+  { name: "핸드폰케이스", price: 30000, quantity: 3 , is_selected:true},
+  { name: "매트리스", price: 18000, quantity: 4 , is_selected:false},
+  { name: "바지", price:25000,quantity:5 , is_selected:false}
 ];
 
 const add = (a, b) => a + b;
@@ -99,3 +109,34 @@ const sum = curry((f, iter) => go(iter, map(f), reduce(add)));
 const tt_quan = sum(p => p.quantity);
 
 console.log(tt_quan(products));
+
+document.querySelector('#cart').innerHTML = `
+    <table>
+        <tr>
+            <th>선택</th>
+            <th>상품이름</th>
+            <th>가격></th>
+            <th>수량</th>
+            <th>총 가격</th>
+        </tr>
+        ${go(products,
+        sum(p => `
+        <tr>
+            <td><input type="checkbox" ${p.is_selected ? 'checked' : ''}></td>
+            <td>${p.name}</td>
+            <td>${p.price}</td>
+            <td><input type="number" value=${p.quantity}></td>
+            <td>${p.price * p.quantity}</td>
+        </tr>
+        `))}
+        <tr>
+            <td colspan='3'>합계</td>
+            <td>${tt_quan(filter(p=>p.is_selected,products))}</td>
+            <td>${t_price(filter(p=>p.is_selected,products))}</td>
+        </tr>
+    </table>
+
+`
+
+</script>
+
